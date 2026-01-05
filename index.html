@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Win Rate Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .brand-section {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      background-color: #f9fbfc;
+    }
+
+    .brand-section h3 {
+      margin-top: 0;
+      color: #444;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #ff8400;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff8400;
+    }
+
+    #result {
+      margin-top: 24px;
+      text-align: left;
+      font-size: 18px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff8400;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🏁 Win Rate Calculator</h2>
+    <form id="responseForm">
+      <div class="brand-section">
+        <h3>Brand A</h3>
+        <label for="oppsA">Opps Created:</label>
+        <input type="number" id="oppsA" min="0" step="1" required>
+
+        <label for="winsA">Wins:</label>
+        <input type="number" id="winsA" min="0" step="1" required>
+      </div>
+
+      <div class="brand-section">
+        <h3>Brand B</h3>
+        <label for="oppsB">Opps Created:</label>
+        <input type="number" id="oppsB" min="0" step="1" required>
+
+        <label for="winsB">Wins:</label>
+        <input type="number" id="winsB" min="0" step="1" required>
+      </div>
+
+      <div class="brand-section">
+        <h3>Brand C</h3>
+        <label for="oppsC">Opps Created:</label>
+        <input type="number" id="oppsC" min="0" step="1" required>
+
+        <label for="winsC">Wins:</label>
+        <input type="number" id="winsC" min="0" step="1" required>
+      </div>
+
+      <button type="button" onclick="calculateWinRates()">Calculate Win Rates</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculateWinRates() {
+      // Captura de valores (se vazio, vira 0)
+      const oppsA = parseInt(document.getElementById('oppsA').value) || 0;
+      const winsA = parseInt(document.getElementById('winsA').value) || 0;
+
+      const oppsB = parseInt(document.getElementById('oppsB').value) || 0;
+      const winsB = parseInt(document.getElementById('winsB').value) || 0;
+
+      const oppsC = parseInt(document.getElementById('oppsC').value) || 0;
+      const winsC = parseInt(document.getElementById('winsC').value) || 0;
+
+      // Win rate por marca (evita divisão por zero)
+      const rateA = oppsA > 0 ? (winsA / oppsA) * 100 : 0;
+      const rateB = oppsB > 0 ? (winsB / oppsB) * 100 : 0;
+      const rateC = oppsC > 0 ? (winsC / oppsC) * 100 : 0;
+
+      // Média ponderada = wins totais / opps totais
+      const totalOpps = oppsA + oppsB + oppsC;
+      const totalWins = winsA + winsB + winsC;
+      const weightedAverage = totalOpps > 0 ? (totalWins / totalOpps) * 100 : 0;
+
+      // Apresentação do resultado
+      const resultEl = document.getElementById('result');
+      resultEl.innerHTML = `
+        <strong>Resultados:</strong><br>
+        • Win Rate — Brand A: <strong>${rateA.toFixed(2)}%</strong> (Wins: ${winsA}, Opps: ${oppsA})<br>
+        • Win Rate — Brand B: <strong>${rateB.toFixed(2)}%</strong> (Wins: ${winsB}, Opps: ${oppsB})<br>
+        • Win Rate — Brand C: <strong>${rateC.toFixed(2)}%</strong> (Wins: ${winsC}, Opps: ${oppsC})<br>
+        <div class="highlight">📊 Weighted Average Win Rate: ${weightedAverage.toFixed(2)}%</div>
+      `;
+    }
+  </script>
+</body>
+</html>
